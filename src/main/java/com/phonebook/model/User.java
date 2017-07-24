@@ -18,7 +18,7 @@ public class User implements UserDetails{
     private Long userId;
     private String lastName;
     private String firstName;
-    private String patronymic_name;
+    private String patronymicName;
     private String login;
     private String password;
 

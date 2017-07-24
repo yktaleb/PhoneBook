@@ -1,10 +1,10 @@
 CREATE TABLE `user` (
   `user_id` INTEGER AUTO_INCREMENT,
-  `login` VARCHAR(60) UNIQUE NOT NULL,
-  `password` VARCHAR(60) NOT NULL,
   `last_name` VARCHAR(60) NOT NULL,
   `first_name` VARCHAR(60) NOT NULL,
   `patronymic_name` VARCHAR(60) NOT NULL,
+  `login` VARCHAR(60) UNIQUE NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`user_id`)
 );
 
