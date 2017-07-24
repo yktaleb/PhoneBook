@@ -1,0 +1,52 @@
+.carousel-indicators li {
+    border: none;
+    border-radius: 50%;
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.carousel-indicators {
+    bottom: -20px;
+}
+
+.product-characteristic-input {
+    margin-bottom: 5px;
+}
+
+.product-characteristic-input select {
+    min-width: 110px;
+}
+
+.product-characteristic-value-input {
+    margin-top: 10px;
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.cities-container div {
+    margin: 5px;
+}
+
+.cities-container {
+    display: flex;
+}
+
+.tab {
+    padding-left: 1em;
+}
+
+span.orders-list {
+    margin-left: 10px;
+}
+textarea {
+    resize: none;
+}
+
+.complaint-row:hover{
+    background: #BEBEBE;
+}
+
+.complain-content-form{
+    width: 90%;
+}

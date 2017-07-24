@@ -11,22 +11,12 @@
         </div>
 
         <div class="navbar-collapse" id="myNavbar">
-            <ul id="navigation" class="nav navbar-nav">
-                <li id="navbar-catalog"><a href="/catalog">Our services</a></li>
-                <li id="navbar-about"><a href="/about">About</a></li>
-                <li id="navbar-contacts"><a href="/contacts">Contacts</a></li>
-            </ul>
-
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown" id="region-select">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="region-selected"></a>
-                    <ul class="dropdown-menu"></ul>
+                <li>
+                    <a href="#" data-toggle="modal" id="navbar-login-button" data-target="#login-modal">Login</a>
                 </li>
                 <li>
-                    <a href="#" class="hidden" data-toggle="modal" id="navbar-login-button" data-target="#login-modal">Login</a>
-                </li>
-                <li>
-                    <a href="#" class="hidden" data-toggle="modal" id="navbar-registration-button" data-target="#registration-modal">Register</a>
+                    <a href="#" data-toggle="modal" id="navbar-registration-button" data-target="#registration-modal">Register</a>
                 </li>
                 <li id="navbar-account">
                     <a href="#" class="dropdown-toggle hidden" data-toggle="dropdown"  id="navbar-account-button">
@@ -53,8 +43,8 @@
             <div class="modal-body">
                 <form id="login-form">
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="Email">
+                        <label for="login">Login</label>
+                        <input type="text" class="form-control" name="login" placeholder="Login">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -90,16 +80,16 @@
                         <input type="text" class="form-control" name="lastName" placeholder="Last name">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="Email">
+                        <label for="patronymicName">Patronymic name</label>
+                        <input type="text" class="form-control" name="patronymicName" placeholder="Patronymic name">
+                    </div>
+                    <div class="form-group">
+                        <label for="login">Login</label>
+                        <input type="text" class="form-control" name="login" placeholder="Login">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" name="password" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="text" class="form-control" name="phone" placeholder="Phone">
                     </div>
                 </form>
             </div>
