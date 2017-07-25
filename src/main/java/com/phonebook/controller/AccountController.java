@@ -39,7 +39,7 @@ public class AccountController {
             result.put("userId", user.getUserId());
             List<Link> profileLinks = new LinkedList<>();
 
-            profileLinks.add(new Link("My profile", "/profile/edit"));
+            profileLinks.add(new Link("My impl", "/impl/edit"));
 
             result.put("profileLinks", profileLinks);
         } else {

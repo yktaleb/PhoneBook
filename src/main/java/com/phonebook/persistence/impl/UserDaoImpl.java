@@ -19,8 +19,6 @@ import java.util.Optional;
 @Repository
 public class UserDaoImpl extends AbstractDao implements UserDao {
 
-    private static final String PK_COLUMN_NAME = "user_id";
-
     @Autowired
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
@@ -31,7 +29,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     public User add(User user) {
         String insertQuery = "INSERT INTO `user` (`last_name`, `first_name`, `patronymic_name`, " +
                 "`login`, `password`) VALUES(?, ?, ?, ?, ?)";
-        Long userId = executeInsertWithId(insertQuery, PK_COLUMN_NAME, user.getLastName(), user.getFirstName(),
+        Long userId = executeInsertWithId(insertQuery, user.getLastName(), user.getFirstName(),
                 user.getPatronymicName(), user.getLogin(), user.getPassword());
         user.setUserId(userId);
 

@@ -19,21 +19,11 @@ public abstract class AbstractDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    protected Long executeInsertWithId(String insertQuery, String pkColumnName, Object... params) {
-        final PreparedStatementCreator psc = connection -> {
-            final PreparedStatement ps = connection.prepareStatement(insertQuery,
-                    Statement.RETURN_GENERATED_KEYS);
-            if (params != null && params.length > 0) {
-                new ArgumentPreparedStatementSetter(params).setValues(ps);
-            }
-            return ps;
-        };
+    protected Long executeInsertWithId(String insertQuery, Object... params) {
 
-        final KeyHolder holder = new GeneratedKeyHolder();
+        jdbcTemplate.update(insertQuery, params);
 
-        jdbcTemplate.update(psc, holder);
-
-        return ((Number) holder.getKeys().get(pkColumnName)).longValue();
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID() ", Long.class);
     }
 
     protected int executeUpdate(String sql, Object... params) {

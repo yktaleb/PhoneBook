@@ -15,8 +15,6 @@ import java.util.List;
 @Repository
 public class RoleDaoImpl extends AbstractDao implements RoleDao {
 
-    private static final String PK_COLUMN_NAME = "role_id";
-
     @Autowired
     public RoleDaoImpl(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
@@ -26,7 +24,7 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
     public Role add(Role role) {
         String insertQuery = "INSERT INTO `role` (`role_name`) VALUES (?)";
 
-        Long roleId = executeInsertWithId(insertQuery, PK_COLUMN_NAME, role.getRoleName());
+        Long roleId = executeInsertWithId(insertQuery, role.getRoleName());
 
         role.setRoleId(roleId);
 
@@ -71,6 +69,13 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
                 "WHERE ur.`user_id` = ?";
 
         return findMultiple(query, new RoleRowMapper(), userId);
+    }
+
+    @Override
+    public Role findByName(String roleName) {
+        String query = "SELECT `role_id`, `role_name` FROM `role` WHERE `role_name` = ?";
+
+        return findOne(query, new RoleRowMapper(), roleName);
     }
 
     private class RoleRowMapper implements RowMapper<Role> {

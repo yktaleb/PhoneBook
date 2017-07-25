@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RoleDao extends CrudDao<Role> {
     List<Role> findUserRolesById(Long userId);
+    Role findByName(String roleName);
 }

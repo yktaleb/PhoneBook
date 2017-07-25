@@ -46,6 +46,7 @@
             </div>
             <div role="tabpanel" class="tab-pane fade" id="s_up">
                 <form class="form-signup" id="registration-form">
+                    <div id="registration-header-alert"></div>
                     <input type="text" class="form-control input-s" name="lastName" placeholder="Last name" required autofocus>
                     <input type="text" class="form-control input-s" name="firstName" placeholder="First name" required>
                     <input type="text" class="form-control input-s" name="patronymicName" placeholder="Patronymic name" required>

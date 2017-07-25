@@ -3,13 +3,11 @@ function logIn() {
     var login = form.find('input[name="login"]').val();
     var password = form.find('input[name="password"]').val();
 
-    var _csrf = $('meta[name=_csrf]').attr("content");
-
     $.ajax({
         type: 'POST',
         url: '/login',
         headers: {
-            'X-CSRF-TOKEN': _csrf
+            'X-CSRF-TOKEN': $('meta[name=_csrf]').attr("content")
         },
         data: {
             login: login,
@@ -33,44 +31,41 @@ function logIn() {
 
 function register() {
     var form = $("#registration-form");
-    var firstName = form.find('input[name="firstName"]').val();
     var lastName = form.find('input[name="lastName"]').val();
-    var email = form.find('input[name="email"]').val();
+    var firstName = form.find('input[name="firstName"]').val();
+    var patronymicName = form.find('input[name="patronymicName"]').val();
+    var login = form.find('input[name="login"]').val();
     var password = form.find('input[name="password"]').val();
-    // var repeatPassword = form.find('input[name="repeatPassword"]').val();
-    var phone = form.find('input[name="phone"]').val();
-
-    var _csrf = $('meta[name=_csrf]').attr("content");
 
     $.ajax({
         type: 'POST',
         url: '/register',
         headers: {
-            'X-CSRF-TOKEN': _csrf
+            'X-CSRF-TOKEN': $('meta[name=_csrf]').attr("content")
         },
         processData: false,
         contentType: 'application/json',
         data: JSON.stringify({
-            firstName: firstName,
             lastName: lastName,
-            email: email,
-            password: password,
-            phoneNumber: phone
+            firstName: firstName,
+            patronymicName: patronymicName,
+            login: login,
+            password: password
         }),
         success: function (data) {
             var alert;
+            console.log(data.status);
+            console.log(data.message);
             if (data.status == 'success') {
                 console.log("Registration success! " + JSON.stringify(data));
-                location.reload();
-                // alert = $('<div id="registration-header-alert" class="alert alert-success" role="alert">' +
-                //     data.message + "</div>");
+                // location.reload();
             } else {
                 console.log("Registration error! " + JSON.stringify(data));
                 alert = $('<div id="registration-header-alert" class="alert alert-danger" role="alert">' +
                     data.message + '</div>');
+                $("#registration-header-alert").replaceWith(alert);
             }
 
-            $("#registration-header-alert").replaceWith(alert);
         },
         error: function (data) {
             console.error("Registration error! " + JSON.stringify(data));

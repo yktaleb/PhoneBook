@@ -1,6 +1,6 @@
 package com.phonebook.configuration;
 
-import com.phonebook.service.security.UserService;
+import com.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/login", "/css/*", "/js/*").permitAll()
+                .antMatchers("/login", "/register", "/css/*", "/js/*").permitAll()
                 .anyRequest().hasAuthority("ROLE_CLIENT")
             .and()
                 .formLogin()
