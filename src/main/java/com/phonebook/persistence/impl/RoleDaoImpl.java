@@ -1,0 +1,75 @@
+package com.phonebook.persistence.impl;
+
+import com.phonebook.model.Role;
+import com.phonebook.persistence.AbstractDao;
+import com.phonebook.persistence.RoleDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+@Repository
+public class RoleDaoImpl extends AbstractDao implements RoleDao {
+
+    private static final String PK_COLUMN_NAME = "role_id";
+
+    @Autowired
+    public RoleDaoImpl(JdbcTemplate jdbcTemplate) {
+        super(jdbcTemplate);
+    }
+
+    @Override
+    public Role add(Role role) {
+        String insertQuery = "INSERT INTO `role` (`role_name`) VALUES (?)";
+
+        Long roleId = executeInsertWithId(insertQuery, PK_COLUMN_NAME, role.getRoleName());
+
+        role.setRoleId(roleId);
+
+        return role;
+    }
+
+    @Override
+    public Role update(Role role) {
+        String updateQuery = "UPDATE `role` SET `role_name` = ? WHERE `role_id` = ?";
+
+        executeUpdate(updateQuery, role.getRoleName(), role.getRoleId());
+
+        return role;
+    }
+
+    @Override
+    public Role find(Long id) {
+        String findOneQuery = "SELECT `role_id`, `role_name` FROM `role` WHERE `role_id` = ?";
+
+        return findOne(findOneQuery, new RoleRowMapper(), id);
+    }
+
+    @Override
+    public List<Role> findAll() {
+        String findAllQuery = "SELECT `role_id`, `role_name` FROM `role`";
+
+        return findMultiple(findAllQuery, new RoleRowMapper());
+    }
+
+    @Override
+    public void delete(Long id) {
+        String deleteQuery = "DELETE FROM `role` WHERE `role_id` = ?";
+        executeUpdate(deleteQuery, id);
+    }
+
+    private class RoleRowMapper implements RowMapper<Role> {
+
+        @Override
+        public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return Role.builder()
+                    .roleId(rs.getLong("role_id"))
+                    .roleName(rs.getString("role_name"))
+                    .build();
+        }
+    }
+}
