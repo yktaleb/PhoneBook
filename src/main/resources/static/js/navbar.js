@@ -103,9 +103,9 @@ function signOut(data) {
 
 
 
-function login() {
+function logIn() {
     var form = $("#login-form");
-    var email = form.find('input[name="email"]').val();
+    var login = form.find('input[name="login"]').val();
     var password = form.find('input[name="password"]').val();
 
     var _csrf = $('meta[name=_csrf]').attr("content");
@@ -117,7 +117,7 @@ function login() {
             'X-CSRF-TOKEN': _csrf
         },
         data: {
-            email: email,
+            login: login,
             password: password
         },
         success: function (data) {
@@ -191,7 +191,6 @@ function register() {
 $(document).ready(function () {
     setNavigation();
     getAccountInformation();
-    loadNavbarRegions();
 });
 
 function setNavigation() {

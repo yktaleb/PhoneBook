@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl extends AbstractDao implements UserDao {
@@ -76,6 +77,16 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         String deleteQuery = "DELETE FROM `user` WHERE `user_id` = ?";
 
         executeUpdate(deleteQuery, id);
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        String findOneQuery = "SELECT `user_id`, `last_name`, `first_name`, `patronymic_name`, " +
+                "`login`, `password` FROM `user` WHERE `login` = ?";
+
+        User user = findOne(findOneQuery, new UserRowMapper(), login);
+
+        return Optional.ofNullable(user);
     }
 
     @Override
