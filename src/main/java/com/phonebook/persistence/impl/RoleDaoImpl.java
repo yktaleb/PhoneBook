@@ -62,6 +62,17 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
         executeUpdate(deleteQuery, id);
     }
 
+    @Override
+    public List<Role> findUserRolesById(Long userId) {
+        String query = "SELECT r.`role_id`, r.`role_name` " +
+                "FROM `role` r " +
+                "INNER JOIN `user_role` ur " +
+                "ON r.`role_id` = ur.`role_id` " +
+                "WHERE ur.`user_id` = ?";
+
+        return findMultiple(query, new RoleRowMapper(), userId);
+    }
+
     private class RoleRowMapper implements RowMapper<Role> {
 
         @Override

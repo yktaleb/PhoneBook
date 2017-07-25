@@ -14,10 +14,12 @@ public class GeneralPagesController {
 
     @RequestMapping({"/", "/index"})
     public String index() {
-        UserDetails yarik = userService.loadUserByUsername("yarik");
-
-        yarik.getUsername();
-
         return "index";
     }
+
+    @RequestMapping("login")
+    public String showLogin() {
+        return "login";
+    }
+
 }
