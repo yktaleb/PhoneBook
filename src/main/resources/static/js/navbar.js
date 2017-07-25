@@ -2,9 +2,14 @@ function displayAnonymousNavigationBar() {
     $("#navbar-login-button").removeClass("hidden");
     $("#navbar-registration-button").removeClass("hidden");
     $("#navbar-account-button").addClass("hidden");
+    $("#navbar-contacts-button").addClass("hidden");
 }
 
 function displayAuthenticatedNavigationBar(data) {
+
+    $("#navbar-contacts-button").removeClass("hidden");
+    $("#navbar-contacts-button").addClass("active");
+
 
     var account = $('#navbar-account-button');
     account.text("Welcome, " + data.name + "!");

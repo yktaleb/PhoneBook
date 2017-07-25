@@ -1,22 +1,22 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">PhoneBook</a>
+            <a class="navbar-brand">PhoneBook</a>
         </div>
 
         <div class="navbar-collapse" id="myNavbar">
+            <ul id="navigation" class="nav navbar-nav">
+                <li id="navbar-catalog">
+                    <a href="/contacts" class="hidden" id="navbar-contacts-button">My contacts</a>
+                </li>
+            </ul>
+
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#" data-toggle="modal" id="navbar-login-button" data-target="#login-modal">Login</a>
+                    <a href="#" class="hidden" data-toggle="modal" id="navbar-login-button" data-target="#login-modal">Login</a>
                 </li>
                 <li>
-                    <a href="#" data-toggle="modal" id="navbar-registration-button" data-target="#registration-modal">Register</a>
+                    <a href="#" class="hidden" data-toggle="modal" id="navbar-registration-button" data-target="#registration-modal">Register</a>
                 </li>
                 <li id="navbar-account">
                     <a href="#" class="dropdown-toggle hidden" data-toggle="dropdown"  id="navbar-account-button">
