@@ -3,9 +3,12 @@ package com.phonebook.service.impl;
 import com.phonebook.model.Contact;
 import com.phonebook.persistence.ContactDao;
 import com.phonebook.service.ContactService;
+import com.phonebook.service.UserService;
 import com.phonebook.service.exceptions.IncorrectContactDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -19,6 +22,14 @@ public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private ContactDao contactDao;
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public List<Contact> getUserContacts() {
+        return contactDao.findByUserId(userService.getCurrentUser().getUserId());
+    }
+
     @Override
     public Contact add(Contact contact) {
         contactDao.add(contact);

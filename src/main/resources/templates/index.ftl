@@ -23,42 +23,31 @@
 <body>
 <div class="container">
 <#include "resources/navbar.ftl"/>
-    <br>
-    <br>
-    <br>
-    <div class="row">
+    <div class="row" >
         <div class=" col-sm-3 col-sm-offset-1">
-            <div id="typeahead-box" class="input-group">
-                <span class="input-group-addon info"><span class="glyphicon glyphicon-search"></span></span>
-                <input class="typeahead" type="text" placeholder="Search">
-                <button type="button" id="search-clear" class="btn btn-link hide"><i
-                        class="glyphicon glyphicon-remove"></i></button>
-            </div>
             <div class="input-group">
-                <button id="add-product-type-button" type="button"
+                <button id="add-contact-button" type="button"
                         class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New contact</button>
                 </span>
             </div>
             <div class="list-group" id="contacts-list"></div>
-            <div id="alert-box"></div>
-
         </div>
-        <div class="col-sm-7 hidden" id="product-type-editor">
+        <div class="col-sm-7 hidden" id="contact-data-editor">
 
             <div class="row">
-                <div class="col-sm-12" id="product-type-values">
+                <div class="col-sm-12" id="contact-data">
                     <div class="form-group">
                         <div id="new-contact-alert-place"></div>
-                        <label for="contact-last-name">Last name</label>
+                        <label for="contact-last-name">Last name*</label>
                         <input type="text" class="form-control" name="contact-last-name" placeholder="Last name"
                                id="contact-last-name-input">
-                        <label for="contact-first-name">First name</label>
+                        <label for="contact-first-name">First name*</label>
                         <input type="text" class="form-control" name="contact-first-name" placeholder="First name"
                                id="contact-first-name-input">
-                        <label for="contact-patronymic-name">Patronymic name</label>
+                        <label for="contact-patronymic-name">Patronymic name*</label>
                         <input type="text" class="form-control" name="contact-patronymic-name" placeholder="Patronymic name"
                                id="contact-patronymic-name-input">
-                        <label for="contact-mobile-phone">Mobile phone</label>
+                        <label for="contact-mobile-phone">Mobile phone*</label>
                         <input type="text" class="form-control" name="contact-mobile-phone" placeholder="Mobile phone"
                                id="contact-mobile-phone-input">
                         <label for="contact-home-phone">Home phone</label>

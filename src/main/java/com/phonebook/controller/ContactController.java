@@ -48,4 +48,10 @@ public class ContactController {
 
         return response;
     }
+
+    @RequestMapping(value = "/all", produces = "application/json")
+    @ResponseBody
+    public List<Contact> getAllContacts() {
+        return contactService.getUserContacts();
+    }
 }

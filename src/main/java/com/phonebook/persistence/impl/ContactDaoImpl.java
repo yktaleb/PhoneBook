@@ -71,6 +71,15 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
 
         executeUpdate(deleteQuery, id);
     }
+
+    @Override
+    public List<Contact> findByUserId(Long userId) {
+        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
+                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ?";
+
+        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
+    }
+
     private class ContactRowMapper implements RowMapper<Contact> {
 
         @Override
