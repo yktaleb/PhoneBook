@@ -1,6 +1,7 @@
 package com.phonebook.controller;
 
 import com.phonebook.model.User;
+import com.phonebook.service.AutoLoginService;
 import com.phonebook.service.RegistrationService;
 import com.phonebook.service.exceptions.IncorrectUserDataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class RegistrationController {
 
     @Autowired
     private RegistrationService registrationService;
-//
-//    @Autowired
-//    private AutoLoginService autoLoginService;
+
+    @Autowired
+    private AutoLoginService autoLoginService;
 
     @RequestMapping(value = "/register", consumes = "application/json", produces = "application/json")
     @ResponseBody
@@ -31,7 +32,7 @@ public class RegistrationController {
         try {
             registrationService.validation(user);
             registrationService.register(user);
-//            autoLoginService.autologin(user.getEmail(), user.getPassword());
+            autoLoginService.autologin(user.getLogin(), user.getPassword());
             result.put("status", "success");
         } catch (IncorrectUserDataException e) {
             result.put("status", "error");
