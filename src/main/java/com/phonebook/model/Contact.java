@@ -12,10 +12,11 @@ import lombok.NoArgsConstructor;
 public class Contact {
     private Long contactId;
     private String lastName;
-    private String first_name;
-    private String patronymic_name;
-    private String mobile_phone;
-    private String home_phone;
-    private String google_place_id;
+    private String firstName;
+    private String patronymicName;
+    private String mobilePhone;
+    private String homePhone;
+    private String googlePlaceId;
     private String email;
+    private Long userId;
 }

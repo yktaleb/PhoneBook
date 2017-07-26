@@ -1,0 +1,95 @@
+.tt-input,
+.tt-hint {
+    width: 222.5px;
+    height: 34px;
+    padding: 4px 40px 4px 15px;
+    font-size: 16px;
+    line-height: 18px;
+    border: 1px solid #ccc;
+    border-left: 0;
+    border-bottom-right-radius:3px;
+    outline: none;
+}
+
+.tt-input {
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999;
+}
+
+.tt-menu {
+    width: 242.5px;
+    margin-top: 7px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    cursor: pointer;
+}
+
+.tt-suggestion {
+    padding: 3px 15px;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.tt-suggestion.tt-cursor {
+    color: #fff;
+    background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+    margin: 0;
+}
+
+#typeahead-box {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+#search-clear {
+    position: absolute;
+    right: 0;
+    color: #7f7f7f;
+}
+
+#search-clear:hover {
+    color:#555;
+}
+
+#search-clear:focus {
+    outline: 0;
+}
+
+.input-group-addon.info {
+    color: rgb(255, 255, 255);
+    background-color: rgb(57, 179, 215);
+    border-color: rgb(38, 154, 188);
+}
+
+@media (max-width: 1199px) {
+    .tt-input,
+    .tt-hint {
+        width: 172.5px;
+    }
+
+    .tt-menu {
+        width: 192.5px;
+    }
+}
+
+@media (max-width: 991px) {
+    .tt-input,
+    .tt-hint {
+        width: 117.5px;
+    }
+
+    .tt-menu {
+        width: 137.5px;
+    }
+}
