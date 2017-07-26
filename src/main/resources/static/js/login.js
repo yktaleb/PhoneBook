@@ -54,11 +54,9 @@ function register() {
         }),
         success: function (data) {
             var alert;
-            console.log(data.status);
-            console.log(data.message);
             if (data.status == 'success') {
                 console.log("Registration success! " + JSON.stringify(data));
-                // location.reload();
+                location = "/";
             } else {
                 console.log("Registration error! " + JSON.stringify(data));
                 alert = $('<div id="registration-header-alert" class="alert alert-danger" role="alert">' +

@@ -6,8 +6,12 @@ import com.phonebook.persistence.RoleDao;
 import com.phonebook.persistence.UserDao;
 import com.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +23,8 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private RoleDao roleDao;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -28,13 +34,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(String fistName, String lastName, String patronymicName, String login, String password, List<String> roles) {
+    public User createUser(String lastName, String firstName, String patronymicName, String login, String password, List<String> roles) {
         User user = User.builder()
-                .firstName(fistName)
                 .lastName(lastName)
+                .firstName(firstName)
                 .patronymicName(patronymicName)
                 .login(login)
-                .password(password)
+                .password(bCryptPasswordEncoder.encode(password))
                 .build();
         List<Role> roleList = new ArrayList<>();
 
@@ -51,5 +57,30 @@ public class UserServiceImpl implements UserService {
         userDao.persistUserRoles(user);
 
         return user;
+    }
+
+    @Override
+    public User updateGeneralInformation(User user) {
+        userDao.updateGeneralInformation(user);
+        return user;
+    }
+
+    @Override
+    public User updatePassword(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userDao.updatePassword(user);
+        return user;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+            return userDao.findByLogin(username).orElse(null);
+        } else {
+            return null;
+        }
+
     }
 }

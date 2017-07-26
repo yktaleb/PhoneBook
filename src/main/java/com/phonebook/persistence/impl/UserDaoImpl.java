@@ -108,6 +108,24 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         batchUpdate(insertQuery, batchArgs);
     }
 
+    @Override
+    @Transactional
+    public User updateGeneralInformation(User user) {
+        String updateQuery = "UPDATE `user` SET `last_name` = ?, `first_name` = ?, `patronymic_name` = ?, " +
+                "`login` = ? WHERE `user_id` = ?";
+        executeUpdate(updateQuery, user.getLastName(), user.getFirstName(),
+                user.getPatronymicName(), user.getLogin(), user.getUserId());
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public User updatePassword(User user) {
+        String updateQuery = "UPDATE `user` SET `password` = ? WHERE `login` = ?";
+        executeUpdate(updateQuery, user.getPassword(), user.getLogin());
+        return user;
+    }
+
     private class UserRowMapper implements RowMapper<User> {
 
         @Override
