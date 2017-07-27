@@ -1,6 +1,16 @@
+var contactsCache;
+
 function setupAddProductTypeButtonClickEvent() {
     $('#add-contact-button').click(function () {
+        var contactsList = $("#contacts-list");
+        contactsList.find("a").removeClass("active");
         $("#contact-data-editor").removeClass("hidden");
+        $("#contact-last-name-input").val("");
+        $("#contact-first-name-input").val("");
+        $("#contact-patronymic-name-input").val("");
+        $("#contact-mobile-phone-input").val("");
+        $("#contact-home-phone-input").val("");
+        $("#contact-email-input").val("");
     })
 }
 
@@ -65,19 +75,41 @@ function addContactsToList(allContacts) {
     var contactsList = $("#contacts-list");
     contactsList.empty();
 
+    contactsCache = allContacts;
+    console.log(contactsCache);
+
     allContacts.reverse();
-    allContacts.forEach(function (contact) {
+    allContacts.forEach(function (contact, index) {
         var ref = document.createElement("a");
-        ref.appendChild(document.createTextNode(contact.firstName));
+        ref.appendChild(document.createTextNode(contact.lastName + " " + contact.firstName + " : " + contact.mobilePhone));
         ref.className = "list-group-item";
         ref.href = "#";
-        // ref.onclick = function () {
-        //     selectItem(index);
-        // };
+        ref.onclick = function () {
+            selectItem(index);
+        };
 
         contactsList.prepend(ref);
     });
 }
+
+function selectItem(index) {
+    var selected = contactsCache.length - index;
+
+    var contactsList = $("#contacts-list");
+    $("#contact-data-editor").removeClass("hidden");
+    contactsList.find("a").removeClass("active");
+
+    contactsList.find("a:nth-child(" + (selected) + ")").addClass("active");
+
+    $("#contact-last-name-input").val(contactsCache[index].lastName);
+    $("#contact-first-name-input").val(contactsCache[index].firstName);
+    $("#contact-patronymic-name-input").val(contactsCache[index].patronymicName);
+    $("#contact-mobile-phone-input").val(contactsCache[index].mobilePhone);
+    $("#contact-home-phone-input").val(contactsCache[index].homePhone);
+    $("#contact-email-input").val(contactsCache[index].email);
+
+}
+
 
 $(document).ready(function () {
     displayAllContacts();
