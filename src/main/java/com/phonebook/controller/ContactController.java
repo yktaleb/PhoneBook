@@ -30,7 +30,7 @@ public class ContactController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public Map update(@RequestBody Contact contact) {
+    public Map add(@RequestBody Contact contact) {
 
         Map<String, String> response = new HashMap<>();
 
@@ -45,6 +45,41 @@ public class ContactController {
             response.put("message", e.getMessage());
             response.put("status", "error");
         }
+
+        return response;
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public Map update(@RequestBody Contact contact) {
+
+        Map<String, String> response = new HashMap<>();
+
+        contact.setUserId(userService.getCurrentUser().getUserId());
+
+        try {
+            contactService.validation(contact);
+            contactService.update(contact);
+            response.put("message", "Contact updated");
+            response.put("status", "success");
+        } catch (IncorrectContactDataException e) {
+            response.put("message", e.getMessage());
+            response.put("status", "error");
+        }
+
+        return response;
+    }
+
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public Map delete(@RequestParam("contactId") Long contactId) {
+
+        Map<String, String> response = new HashMap<>();
+
+        contactService.delete(contactId);
+
+        response.put("status", "success");
 
         return response;
     }

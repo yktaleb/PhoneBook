@@ -64,8 +64,14 @@
                 <div class="col-sm-12" style="margin-top: 10px;">
                     <div class="col-xs-12 text-center">
                         <div class="form-group">
-                            <a class="btn btn-success" onclick="saveNewContact()">
+                            <a class="btn btn-success" id="button-save" onclick="saveNewContact()">
                                 <span class="glyphicon glyphicon-floppy-disk"></span>Save
+                            </a>
+                            <a class="btn btn-success hidden" id="button-update" onclick="updateContact()">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>Update
+                            </a>
+                            <a class="btn btn-danger hidden" id="button-delete" onclick="deleteContact()">
+                                <span class="glyphicon glyphicon glyphicon-remove"></span>Delete
                             </a>
                         </div>
                     </div>

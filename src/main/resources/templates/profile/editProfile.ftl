@@ -23,9 +23,6 @@
 <div class="container">
 
 <#include "../resources/navbar.ftl"/>
-    <br>
-    <br>
-    <br>
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab1" data-toggle="tab">General</a></li>

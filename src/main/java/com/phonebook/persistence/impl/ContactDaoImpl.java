@@ -55,11 +55,11 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Override
     @Transactional
     public Contact update(Contact contact) {
-        String updateQuery = "UPDATE `contact` SET (`last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id`) WHERE `contact_id` = ?";
+        String updateQuery = "UPDATE `contact` SET `last_name` = ?, `first_name` = ?, `patronymic_name` = ?, " +
+                "`mobile_phone` = ?, `home_phone` = ?, `google_place_id` = ?, `email` = ?, `user_id` = ? WHERE `contact_id` = ?";
 
         executeUpdate(updateQuery, contact.getLastName(), contact.getFirstName(), contact.getPatronymicName(),
-                contact.getMobilePhone(), contact.getHomePhone(), contact.getGooglePlaceId(), contact.getEmail(), contact.getContactId());
+                contact.getMobilePhone(), contact.getHomePhone(), contact.getGooglePlaceId(), contact.getEmail(), contact.getUserId(), contact.getContactId());
 
         return contact;
     }

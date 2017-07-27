@@ -1,10 +1,15 @@
 var contactsCache;
+var selected;
+var selectedItem;
 
 function setupAddProductTypeButtonClickEvent() {
     $('#add-contact-button').click(function () {
         var contactsList = $("#contacts-list");
         contactsList.find("a").removeClass("active");
         $("#contact-data-editor").removeClass("hidden");
+        $("#button-update").addClass("hidden");
+        $("#button-delete").addClass("hidden");
+        $("#button-save").removeClass("hidden");
         $("#contact-last-name-input").val("");
         $("#contact-first-name-input").val("");
         $("#contact-patronymic-name-input").val("");
@@ -41,7 +46,87 @@ function saveNewContact() {
                 console.log("Update success! " + JSON.stringify(data));
                 alert = $('<div id="new-contact-alert-place" class="alert alert-success" role="alert">' +
                     data.message + "</div>");
-                location.reload();
+                displayAllContacts();
+                $("#contact-data-editor").addClass("hidden");
+            } else {
+                console.log("Error! " + JSON.stringify(data));
+                alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
+                    data.message + '</div>');
+            }
+            $("#new-contact-alert-place").replaceWith(alert);
+        },
+        error: function (data) {
+            console.error("Error" + JSON.stringify(data));
+            var alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
+                "Error</div>");
+            $("#new-contact-alert-place").replaceWith(alert);
+        }
+    });
+}
+
+function deleteContact() {
+    $.ajax({
+        type: 'POST',
+        url: '/api/contact/delete',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name=_csrf]').attr("content")
+        },
+        data: {
+            contactId: contactsCache[selected].contactId
+        },
+        success: function (data) {
+            var alert;
+            if (data.status == 'success') {
+                console.log("Update success! " + JSON.stringify(data));
+                alert = $('<div id="new-contact-alert-place" class="alert alert-success" role="alert">' +
+                    "Contact deleted" + "</div>");
+                displayAllContacts();
+                $("#contact-data-editor").addClass("hidden");
+
+            } else {
+                console.log("Error! " + JSON.stringify(data));
+                alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
+                    "error" + '</div>');
+            }
+            $("#new-contact-alert-place").replaceWith(alert);
+        },
+        error: function (data) {
+            console.error("Error" + JSON.stringify(data));
+            var alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
+                "Error</div>");
+            $("#new-contact-alert-place").replaceWith(alert);
+        }
+    });
+}
+
+function updateContact() {
+    var contact = {};
+    contact.contactId = contactsCache[selected].contactId;
+    contact.lastName = $("#contact-last-name-input").val();
+    contact.firstName = $("#contact-first-name-input").val();
+    contact.patronymicName = $("#contact-patronymic-name-input").val();
+    contact.mobilePhone = $("#contact-mobile-phone-input").val();
+    contact.homePhone = $("#contact-home-phone-input").val();
+
+    contact.email = $("#contact-email-input").val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/contact/update',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name=_csrf]').attr("content")
+        },
+        processData: false,
+        contentType: 'application/json',
+        data: JSON.stringify(contact),
+        success: function (data) {
+            var alert;
+            if (data.status == 'success') {
+                console.log("Update success! " + JSON.stringify(data));
+                alert = $('<div id="new-contact-alert-place" class="alert alert-success" role="alert">' +
+                    data.message + "</div>");
+                displayAllContacts();
+                $("#contact-data-editor").addClass("hidden");
             } else {
                 console.log("Error! " + JSON.stringify(data));
                 alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
@@ -81,7 +166,8 @@ function addContactsToList(allContacts) {
     allContacts.reverse();
     allContacts.forEach(function (contact, index) {
         var ref = document.createElement("a");
-        ref.appendChild(document.createTextNode(contact.lastName + " " + contact.firstName + " : " + contact.mobilePhone));
+        ref.appendChild(document.createTextNode(contact.lastName + " " +
+            contact.firstName + " " + contact.patronymicName + " : " + contact.mobilePhone));
         ref.className = "list-group-item";
         ref.href = "#";
         ref.onclick = function () {
@@ -93,13 +179,18 @@ function addContactsToList(allContacts) {
 }
 
 function selectItem(index) {
-    var selected = contactsCache.length - index;
+    selectedItem = contactsCache.length - index;
+
+    $("#button-update").removeClass("hidden");
+    $("#button-delete").removeClass("hidden");
+    $("#button-save").addClass("hidden");
 
     var contactsList = $("#contacts-list");
     $("#contact-data-editor").removeClass("hidden");
     contactsList.find("a").removeClass("active");
 
-    contactsList.find("a:nth-child(" + (selected) + ")").addClass("active");
+    contactsList.find("a:nth-child(" + (selectedItem) + ")").addClass("active");
+    selected = index;
 
     $("#contact-last-name-input").val(contactsCache[index].lastName);
     $("#contact-first-name-input").val(contactsCache[index].firstName);

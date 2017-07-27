@@ -33,7 +33,18 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact add(Contact contact) {
         contactDao.add(contact);
-        return null;
+        return contact;
+    }
+
+    @Override
+    public Contact update(Contact contact) {
+        contactDao.update(contact);
+        return contact;
+    }
+
+    @Override
+    public void delete(Long contactId) {
+        contactDao.delete(contactId);
     }
 
     @Override
