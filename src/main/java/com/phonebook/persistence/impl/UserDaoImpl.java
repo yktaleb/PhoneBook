@@ -1,144 +1,114 @@
 package com.phonebook.persistence.impl;
 
-import com.phonebook.model.Role;
 import com.phonebook.model.User;
-import com.phonebook.persistence.AbstractDao;
 import com.phonebook.persistence.UserDao;
+import com.phonebook.persistence.storage.database.dao.UserDaoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDaoImpl extends AbstractDao implements UserDao {
+public class UserDaoImpl implements UserDao {
+
+    @Value("${storage.type}")
+    private String storageType;
+
+    private final String DATABASE = "database";
+    private final String XML = "xml";
 
     @Autowired
-    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
+    private UserDaoDatabase userDaoDatabase;
+
+    @Override
+    public User add(User entity) {
+        if (storageType.equals(DATABASE)) {
+            return userDaoDatabase.add(entity);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
-    public User add(User user) {
-        String insertQuery = "INSERT INTO `user` (`last_name`, `first_name`, `patronymic_name`, " +
-                "`login`, `password`) VALUES(?, ?, ?, ?, ?)";
-        Long userId = executeInsertWithId(insertQuery, user.getLastName(), user.getFirstName(),
-                user.getPatronymicName(), user.getLogin(), user.getPassword());
-        user.setUserId(userId);
-
-        return user;
-    }
-
-    @Override
-    @Transactional
     public User find(Long id) {
-        String findOneQuery = "SELECT `user_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`login`, `password` FROM `user` WHERE `user_id` = ?";
-
-        return findOne(findOneQuery, new UserRowMapper(), id);
+        if (storageType.equals(DATABASE)) {
+            return userDaoDatabase.find(id);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
     public List<User> findAll() {
-        String findAllQuery = "SELECT `user_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`login`, `password` FROM `user`";
-
-        return findMultiple(findAllQuery, new UserRowMapper());
+        if (storageType.equals(DATABASE)) {
+            return userDaoDatabase.findAll();
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
-    public User update(User user) {
-        String updateQuery = "UPDATE `user` SET (`last_name` = ?, `first_name` = ?, `patronymic_name` = ?, " +
-                "`login` = ?, `password` = ? WHERE `user_id` = ?";
-
-        executeUpdate(updateQuery, user.getLastName(), user.getFirstName(),
-                user.getPatronymicName(), user.getLogin(), user.getPassword(), user.getUserId());
-
-        deleteUserRoles(user.getUserId());
-        persistUserRoles(user);
-
-        return user;
+    public User update(User entity) {
+        if (storageType.equals(DATABASE)) {
+            return userDaoDatabase.update(entity);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
-        String deleteQuery = "DELETE FROM `user` WHERE `user_id` = ?";
+        if (storageType.equals(DATABASE)) {
+            userDaoDatabase.delete(id);
+        } else {
 
-        executeUpdate(deleteQuery, id);
+        }
     }
 
     @Override
     public Optional<User> findByLogin(String login) {
-        String findOneQuery = "SELECT `user_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`login`, `password` FROM `user` WHERE `login` = ?";
-
-        User user = findOne(findOneQuery, new UserRowMapper(), login);
-
-        return Optional.ofNullable(user);
-    }
-
-    @Override
-    @Transactional
-    public void deleteUserRoles(Long userId) {
-        String deleteQuery = "DELETE FROM `user_role` WHERE `user_id` = ?";
-
-        executeUpdate(deleteQuery, userId);
-    }
-
-    @Override
-    @Transactional
-    public void persistUserRoles(User user) {
-        String insertQuery = "INSERT INTO `user_role` (`user_id`, `role_id`) VALUES(?, ?)";
-
-        List<Object[]> batchArgs = new ArrayList<>();
-        for (Role role : user.getRoles()) {
-            batchArgs.add(new Object[]{user.getUserId(), role.getRoleId()});
+        if (storageType.equals(DATABASE)) {
+            return userDaoDatabase.findByLogin(login);
+        } else {
+            return null;
         }
-
-        batchUpdate(insertQuery, batchArgs);
     }
 
     @Override
-    @Transactional
+    public void deleteUserRoles(Long userId) {
+        if (storageType.equals(DATABASE)) {
+            userDaoDatabase.deleteUserRoles(userId);
+        } else {
+
+        }
+    }
+
+    @Override
+    public void persistUserRoles(User user) {
+        if (storageType.equals(DATABASE)) {
+            userDaoDatabase.persistUserRoles(user);
+        } else {
+
+        }
+    }
+
+    @Override
     public User updateGeneralInformation(User user) {
-        String updateQuery = "UPDATE `user` SET `last_name` = ?, `first_name` = ?, `patronymic_name` = ?, " +
-                "`login` = ? WHERE `user_id` = ?";
-        executeUpdate(updateQuery, user.getLastName(), user.getFirstName(),
-                user.getPatronymicName(), user.getLogin(), user.getUserId());
-        return user;
+        if (storageType.equals(DATABASE)) {
+            return userDaoDatabase.updateGeneralInformation(user);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
     public User updatePassword(User user) {
-        String updateQuery = "UPDATE `user` SET `password` = ? WHERE `login` = ?";
-        executeUpdate(updateQuery, user.getPassword(), user.getLogin());
-        return user;
-    }
-
-    private class UserRowMapper implements RowMapper<User> {
-
-        @Override
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-            return User.builder()
-                    .userId(rs.getLong("user_id"))
-                    .lastName(rs.getString("last_name"))
-                    .firstName(rs.getString("first_name"))
-                    .patronymicName(rs.getString("patronymic_name"))
-                    .login(rs.getString("login"))
-                    .password(rs.getString("password"))
-                    .build();
+        if (storageType.equals(DATABASE)) {
+            return userDaoDatabase.updatePassword(user);
+        } else {
+            return null;
         }
     }
 }

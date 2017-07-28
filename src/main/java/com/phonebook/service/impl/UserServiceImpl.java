@@ -4,6 +4,7 @@ import com.phonebook.model.Role;
 import com.phonebook.model.User;
 import com.phonebook.persistence.RoleDao;
 import com.phonebook.persistence.UserDao;
+import com.phonebook.persistence.impl.UserDaoImpl;
 import com.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -16,11 +17,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserDao userDao;
+    private UserDaoImpl userDao;
     @Autowired
     private RoleDao roleDao;
     @Autowired
@@ -31,6 +33,11 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("user was not found!"));
         user.setRoles(roleDao.findUserRolesById(user.getUserId()));
         return user;
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        return userDao.findByLogin(login);
     }
 
     @Override

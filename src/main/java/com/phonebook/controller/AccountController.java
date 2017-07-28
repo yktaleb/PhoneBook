@@ -3,6 +3,7 @@ package com.phonebook.controller;
 import com.phonebook.model.User;
 import com.phonebook.persistence.RoleDao;
 import com.phonebook.persistence.UserDao;
+import com.phonebook.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,12 +17,12 @@ import java.util.*;
 @RestController
 public class AccountController {
 
-    private UserDao userDao;
+    private UserService userService;
     private RoleDao roleDao;
 
     @Autowired
-    public AccountController(UserDao userDao, RoleDao roleDao) {
-        this.userDao = userDao;
+    public AccountController(UserService userService, RoleDao roleDao) {
+        this.userService = userService;
         this.roleDao = roleDao;
     }
 
@@ -30,7 +31,7 @@ public class AccountController {
         Map<String, Object> result = new HashMap<>();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Optional<User> userOptional = userDao.findByLogin(auth.getName());
+        Optional<User> userOptional = userService.findByLogin(auth.getName());
 
         if (auth.isAuthenticated() && userOptional.isPresent()) {
             User user = userOptional.get();

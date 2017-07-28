@@ -1,99 +1,86 @@
 package com.phonebook.persistence.impl;
 
 import com.phonebook.model.Role;
-import com.phonebook.persistence.AbstractDao;
 import com.phonebook.persistence.RoleDao;
+import com.phonebook.persistence.storage.database.dao.RoleDaoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class RoleDaoImpl extends AbstractDao implements RoleDao {
+public class RoleDaoImpl implements RoleDao {
+
+    @Value("${storage.type}")
+    private String storageType;
+
+    private final String DATABASE = "database";
+    private final String XML = "xml";
 
     @Autowired
-    public RoleDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
+    private RoleDaoDatabase roleDaoDatabase;
+
+    @Override
+    public Role add(Role entity) {
+        if (storageType.equals(DATABASE)) {
+            return roleDaoDatabase.add(entity);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
-    public Role add(Role role) {
-        String insertQuery = "INSERT INTO `role` (`role_name`) VALUES (?)";
-
-        Long roleId = executeInsertWithId(insertQuery, role.getRoleName());
-
-        role.setRoleId(roleId);
-
-        return role;
-    }
-
-    @Override
-    @Transactional
-    public Role update(Role role) {
-        String updateQuery = "UPDATE `role` SET `role_name` = ? WHERE `role_id` = ?";
-
-        executeUpdate(updateQuery, role.getRoleName(), role.getRoleId());
-
-        return role;
-    }
-
-    @Override
-    @Transactional
     public Role find(Long id) {
-        String findOneQuery = "SELECT `role_id`, `role_name` FROM `role` WHERE `role_id` = ?";
-
-        return findOne(findOneQuery, new RoleRowMapper(), id);
+        if (storageType.equals(DATABASE)) {
+            return roleDaoDatabase.find(id);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
     public List<Role> findAll() {
-        String findAllQuery = "SELECT `role_id`, `role_name` FROM `role`";
-
-        return findMultiple(findAllQuery, new RoleRowMapper());
+        if (storageType.equals(DATABASE)) {
+            return roleDaoDatabase.findAll();
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
+    public Role update(Role entity) {
+        if (storageType.equals(DATABASE)) {
+            return roleDaoDatabase.update(entity);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public void delete(Long id) {
-        String deleteQuery = "DELETE FROM `role` WHERE `role_id` = ?";
-        executeUpdate(deleteQuery, id);
+        if (storageType.equals(DATABASE)) {
+            roleDaoDatabase.delete(id);
+        } else {
+
+        }
     }
 
     @Override
-    @Transactional
     public List<Role> findUserRolesById(Long userId) {
-        String query = "SELECT r.`role_id`, r.`role_name` " +
-                "FROM `role` r " +
-                "INNER JOIN `user_role` ur " +
-                "ON r.`role_id` = ur.`role_id` " +
-                "WHERE ur.`user_id` = ?";
-
-        return findMultiple(query, new RoleRowMapper(), userId);
+        if (storageType.equals(DATABASE)) {
+            return roleDaoDatabase.findUserRolesById(userId);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    @Transactional
     public Role findByName(String roleName) {
-        String query = "SELECT `role_id`, `role_name` FROM `role` WHERE `role_name` = ?";
-
-        return findOne(query, new RoleRowMapper(), roleName);
-    }
-
-    private class RoleRowMapper implements RowMapper<Role> {
-
-        @Override
-        public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return Role.builder()
-                    .roleId(rs.getLong("role_id"))
-                    .roleName(rs.getString("role_name"))
-                    .build();
+        if (storageType.equals(DATABASE)) {
+            return roleDaoDatabase.findByName(roleName);
+        } else {
+            return null;
         }
     }
 }

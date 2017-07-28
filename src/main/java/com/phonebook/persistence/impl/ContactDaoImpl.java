@@ -1,135 +1,104 @@
 package com.phonebook.persistence.impl;
 
 import com.phonebook.model.Contact;
-import com.phonebook.persistence.AbstractDao;
 import com.phonebook.persistence.ContactDao;
+import com.phonebook.persistence.storage.database.dao.ContactDaoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ContactDaoImpl extends AbstractDao implements ContactDao {
+public class ContactDaoImpl implements ContactDao {
+
+    @Value("${storage.type}")
+    private String storageType;
+
+    private final String DATABASE = "database";
+    private final String XML = "xml";
+
     @Autowired
-    public ContactDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
-    }
+    private ContactDaoDatabase contactDaoDatabase;
 
     @Override
-    @Transactional
-    public Contact add(Contact contact) {
-        String insertQuery = "INSERT INTO `contact` (`last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-
-        Long contactId = executeInsertWithId(insertQuery, contact.getLastName(), contact.getFirstName(), contact.getPatronymicName(),
-                contact.getMobilePhone(), contact.getHomePhone(), contact.getAddress(), contact.getEmail(), contact.getUserId());
-
-        contact.setContactId(contactId);
-
-        return contact;
-    }
-
-    @Override
-    @Transactional
-    public Contact find(Long id) {
-        String findOneQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE `contact_id` = ?";
-
-        return findOne(findOneQuery, new ContactRowMapper(), id);
-    }
-
-    @Override
-    @Transactional
-    public List<Contact> findAll() {
-        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact`";
-
-        return findMultiple(findAllQuery, new ContactRowMapper());
-    }
-
-    @Override
-    @Transactional
-    public Contact update(Contact contact) {
-        String updateQuery = "UPDATE `contact` SET `last_name` = ?, `first_name` = ?, `patronymic_name` = ?, " +
-                "`mobile_phone` = ?, `home_phone` = ?, `address` = ?, `email` = ?, `user_id` = ? WHERE `contact_id` = ?";
-
-        executeUpdate(updateQuery, contact.getLastName(), contact.getFirstName(), contact.getPatronymicName(),
-                contact.getMobilePhone(), contact.getHomePhone(), contact.getAddress(), contact.getEmail(), contact.getUserId(), contact.getContactId());
-
-        return contact;
-    }
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        String deleteQuery = "DELETE FROM `contact` WHERE `contact_id` = ?";
-
-        executeUpdate(deleteQuery, id);
-    }
-
-    @Override
-    @Transactional
-    public List<Contact> findByUserId(Long userId) {
-        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ?";
-
-        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
-    }
-
-    @Override
-    @Transactional
-    public List<Contact> findSortedByFirstName(Long userId) {
-        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
-                "ORDER BY first_name";
-
-        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
-    }
-
-    @Override
-    @Transactional
-    public List<Contact> findSortedByLastName(Long userId) {
-        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
-                "ORDER BY last_name";
-
-        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
-    }
-
-    @Override
-    @Transactional
-    public List<Contact> findSortedByMobilePhone(Long userId) {
-        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
-                "ORDER BY mobile_phone";
-
-        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
-    }
-
-    private class ContactRowMapper implements RowMapper<Contact> {
-
-        @Override
-        public Contact mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-            return Contact.builder()
-                    .contactId(rs.getLong("contact_id"))
-                    .lastName(rs.getString("last_name"))
-                    .firstName(rs.getString("first_name"))
-                    .patronymicName(rs.getString("patronymic_name"))
-                    .mobilePhone(rs.getString("mobile_phone"))
-                    .homePhone(rs.getString("home_phone"))
-                    .address(rs.getString("address"))
-                    .email(rs.getString("email"))
-                    .userId(rs.getLong("user_id"))
-                    .build();
+    public Contact add(Contact entity) {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.add(entity);
+        } else {
+            return null;
         }
     }
 
+    @Override
+    public Contact find(Long id) {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.find(id);
+        } else {
+            return null;
+        }
+    }
 
+    @Override
+    public List<Contact> findAll() {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.findAll();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Contact update(Contact entity) {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.update(entity);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (storageType.equals(DATABASE)) {
+            contactDaoDatabase.delete(id);
+        } else {
+
+        }
+    }
+
+    @Override
+    public List<Contact> findByUserId(Long userId) {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.findByUserId(userId);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Contact> findSortedByFirstName(Long userId) {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.findSortedByFirstName(userId);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Contact> findSortedByLastName(Long userId) {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.findSortedByLastName(userId);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Contact> findSortedByMobilePhone(Long userId) {
+        if (storageType.equals(DATABASE)) {
+            return contactDaoDatabase.findSortedByMobilePhone(userId);
+        } else {
+            return null;
+        }
+    }
 }
