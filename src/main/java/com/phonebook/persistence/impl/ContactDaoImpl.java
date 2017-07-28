@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -73,9 +74,40 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     }
 
     @Override
+    @Transactional
     public List<Contact> findByUserId(Long userId) {
         String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
                 "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ?";
+
+        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
+    }
+
+    @Override
+    @Transactional
+    public List<Contact> findSortedByFirstName(Long userId) {
+        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
+                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
+                "ORDER BY first_name";
+
+        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
+    }
+
+    @Override
+    @Transactional
+    public List<Contact> findSortedByLastName(Long userId) {
+        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
+                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
+                "ORDER BY last_name";
+
+        return findMultiple(findAllQuery, new ContactRowMapper(), userId);
+    }
+
+    @Override
+    @Transactional
+    public List<Contact> findSortedByMobilePhone(Long userId) {
+        String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
+                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
+                "ORDER BY mobile_phone";
 
         return findMultiple(findAllQuery, new ContactRowMapper(), userId);
     }

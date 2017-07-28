@@ -30,6 +30,14 @@
                         class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New contact</button>
                 </span>
             </div>
+            <div class="form-group">
+                <select class="form-control" name="sort-type-select" id="sort-type-select" onchange="sortContacts()">
+                    <option selected disabled value="0">Sort by</option>
+                    <option value="1">Sort by last name</option>
+                    <option value="2">Sort by first name</option>
+                    <option value="3">Sort by mobile phone</option>
+                </select>
+            </div>
             <div class="list-group" id="contacts-list"></div>
         </div>
         <div class="col-sm-7 hidden" id="contact-data-editor">

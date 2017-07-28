@@ -20,6 +20,8 @@ public class ContactServiceImpl implements ContactService {
     private final String INCORRECT_PHONE = "Incorrect phone number. Example: +380(66)1234567";
     private final String INVALID_EMAIL = "Incorrect email address";
 
+    private final String FIRST_NAME = "first_name";
+
     @Autowired
     private ContactDao contactDao;
     @Autowired
@@ -28,6 +30,22 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<Contact> getUserContacts() {
         return contactDao.findByUserId(userService.getCurrentUser().getUserId());
+    }
+
+    @Override
+    public List<Contact> getSortByFirstName() {
+        List<Contact> sortedByFirstName = contactDao.findSortedByFirstName(userService.getCurrentUser().getUserId());
+        return contactDao.findSortedByFirstName(userService.getCurrentUser().getUserId());
+    }
+
+    @Override
+    public List<Contact> getSortByLastName() {
+        return contactDao.findSortedByLastName(userService.getCurrentUser().getUserId());
+    }
+
+    @Override
+    public List<Contact> getSortByMobilePhone() {
+        return contactDao.findSortedByMobilePhone(userService.getCurrentUser().getUserId());
     }
 
     @Override

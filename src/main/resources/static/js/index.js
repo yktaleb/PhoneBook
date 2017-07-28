@@ -43,9 +43,6 @@ function saveNewContact() {
         success: function (data) {
             var alert;
             if (data.status == 'success') {
-                console.log("Update success! " + JSON.stringify(data));
-                alert = $('<div id="new-contact-alert-place" class="alert alert-success" role="alert">' +
-                    data.message + "</div>");
                 displayAllContacts();
                 $("#contact-data-editor").addClass("hidden");
             } else {
@@ -77,9 +74,6 @@ function deleteContact() {
         success: function (data) {
             var alert;
             if (data.status == 'success') {
-                console.log("Update success! " + JSON.stringify(data));
-                alert = $('<div id="new-contact-alert-place" class="alert alert-success" role="alert">' +
-                    "Contact deleted" + "</div>");
                 displayAllContacts();
                 $("#contact-data-editor").addClass("hidden");
 
@@ -122,9 +116,6 @@ function updateContact() {
         success: function (data) {
             var alert;
             if (data.status == 'success') {
-                console.log("Update success! " + JSON.stringify(data));
-                alert = $('<div id="new-contact-alert-place" class="alert alert-success" role="alert">' +
-                    data.message + "</div>");
                 displayAllContacts();
                 $("#contact-data-editor").addClass("hidden");
             } else {
@@ -147,10 +138,11 @@ function displayAllContacts() {
     $.ajax({
         url: '/api/contact/all',
         success: function (data) {
+            $("#sort-type-select").val("0");
             addContactsToList(data);
         },
         error: function (data) {
-            addContactsToList(data);
+            console.log("Error");
         }
     });
 
@@ -161,7 +153,6 @@ function addContactsToList(allContacts) {
     contactsList.empty();
 
     contactsCache = allContacts;
-    console.log(contactsCache);
 
     allContacts.reverse();
     allContacts.forEach(function (contact, index) {
@@ -175,6 +166,56 @@ function addContactsToList(allContacts) {
         };
 
         contactsList.prepend(ref);
+    });
+}
+
+function sortContacts() {
+    var id = $("#sort-type-select").val();
+
+    if (id == 1) {
+        sortByLastName();
+    } else if (id == 2) {
+        sortByFirstName();
+    } else if (id == 3) {
+        sortByMobilePhone();
+    }
+}
+
+function sortByLastName() {
+    $.ajax({
+        url: '/api/contact/getSort/lastName',
+        success: function (data) {
+            contactsCache = null;
+            addContactsToList(data);
+        },
+        error: function (data) {
+            console.log("error");
+        }
+    });
+}
+function sortByFirstName() {
+    $.ajax({
+        url: '/api/contact/getSort/firstName',
+        success: function (data) {
+            contactsCache = null;
+            addContactsToList(data);
+        },
+        error: function (data) {
+            console.log("error");
+        }
+    });
+}
+
+function sortByMobilePhone() {
+    $.ajax({
+        url: '/api/contact/getSort/mobilePhone',
+        success: function (data) {
+            contactsCache = null;
+            addContactsToList(data);
+        },
+        error: function (data) {
+            console.log("error");
+        }
     });
 }
 

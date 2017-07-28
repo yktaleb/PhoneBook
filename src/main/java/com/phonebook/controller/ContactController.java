@@ -84,6 +84,24 @@ public class ContactController {
         return response;
     }
 
+    @RequestMapping(value = "/getSort/firstName", produces = "application/json")
+    @ResponseBody
+    public List<Contact> getSortedByFirstName() {
+        return contactService.getSortByFirstName();
+    }
+
+    @RequestMapping(value = "/getSort/lastName", produces = "application/json")
+    @ResponseBody
+    public List<Contact> getSortedByLastName() {
+        return contactService.getSortByLastName();
+    }
+
+    @RequestMapping(value = "/getSort/mobilePhone", produces = "application/json")
+    @ResponseBody
+    public List<Contact> getSortedByMobilePhone() {
+        return contactService.getSortByMobilePhone();
+    }
+
     @RequestMapping(value = "/all", produces = "application/json")
     @ResponseBody
     public List<Contact> getAllContacts() {

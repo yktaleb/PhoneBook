@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
     }
 
     @Override
+    @Transactional
     public Role add(Role role) {
         String insertQuery = "INSERT INTO `role` (`role_name`) VALUES (?)";
 
@@ -32,6 +34,7 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
     }
 
     @Override
+    @Transactional
     public Role update(Role role) {
         String updateQuery = "UPDATE `role` SET `role_name` = ? WHERE `role_id` = ?";
 
@@ -41,6 +44,7 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
     }
 
     @Override
+    @Transactional
     public Role find(Long id) {
         String findOneQuery = "SELECT `role_id`, `role_name` FROM `role` WHERE `role_id` = ?";
 
@@ -48,6 +52,7 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
     }
 
     @Override
+    @Transactional
     public List<Role> findAll() {
         String findAllQuery = "SELECT `role_id`, `role_name` FROM `role`";
 
@@ -55,12 +60,14 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         String deleteQuery = "DELETE FROM `role` WHERE `role_id` = ?";
         executeUpdate(deleteQuery, id);
     }
 
     @Override
+    @Transactional
     public List<Role> findUserRolesById(Long userId) {
         String query = "SELECT r.`role_id`, r.`role_name` " +
                 "FROM `role` r " +
@@ -72,6 +79,7 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
     }
 
     @Override
+    @Transactional
     public Role findByName(String roleName) {
         String query = "SELECT `role_id`, `role_name` FROM `role` WHERE `role_name` = ?";
 
