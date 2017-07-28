@@ -67,8 +67,8 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void validation(Contact contact) throws IncorrectContactDataException {
-        if ("".equals(contact.getGooglePlaceId())) {
-            contact.setGooglePlaceId(null);
+        if ("".equals(contact.getAddress())) {
+            contact.setAddress(null);
         }
         if ("".equals(contact.getHomePhone())) {
             contact.setHomePhone(null);

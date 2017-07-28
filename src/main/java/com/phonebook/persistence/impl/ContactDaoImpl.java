@@ -25,10 +25,10 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public Contact add(Contact contact) {
         String insertQuery = "INSERT INTO `contact` (`last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         Long contactId = executeInsertWithId(insertQuery, contact.getLastName(), contact.getFirstName(), contact.getPatronymicName(),
-                contact.getMobilePhone(), contact.getHomePhone(), contact.getGooglePlaceId(), contact.getEmail(), contact.getUserId());
+                contact.getMobilePhone(), contact.getHomePhone(), contact.getAddress(), contact.getEmail(), contact.getUserId());
 
         contact.setContactId(contactId);
 
@@ -39,7 +39,7 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public Contact find(Long id) {
         String findOneQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE `contact_id` = ?";
+                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE `contact_id` = ?";
 
         return findOne(findOneQuery, new ContactRowMapper(), id);
     }
@@ -48,7 +48,7 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public List<Contact> findAll() {
         String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact`";
+                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact`";
 
         return findMultiple(findAllQuery, new ContactRowMapper());
     }
@@ -57,10 +57,10 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public Contact update(Contact contact) {
         String updateQuery = "UPDATE `contact` SET `last_name` = ?, `first_name` = ?, `patronymic_name` = ?, " +
-                "`mobile_phone` = ?, `home_phone` = ?, `google_place_id` = ?, `email` = ?, `user_id` = ? WHERE `contact_id` = ?";
+                "`mobile_phone` = ?, `home_phone` = ?, `address` = ?, `email` = ?, `user_id` = ? WHERE `contact_id` = ?";
 
         executeUpdate(updateQuery, contact.getLastName(), contact.getFirstName(), contact.getPatronymicName(),
-                contact.getMobilePhone(), contact.getHomePhone(), contact.getGooglePlaceId(), contact.getEmail(), contact.getUserId(), contact.getContactId());
+                contact.getMobilePhone(), contact.getHomePhone(), contact.getAddress(), contact.getEmail(), contact.getUserId(), contact.getContactId());
 
         return contact;
     }
@@ -77,7 +77,7 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public List<Contact> findByUserId(Long userId) {
         String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ?";
+                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ?";
 
         return findMultiple(findAllQuery, new ContactRowMapper(), userId);
     }
@@ -86,7 +86,7 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public List<Contact> findSortedByFirstName(Long userId) {
         String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
+                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
                 "ORDER BY first_name";
 
         return findMultiple(findAllQuery, new ContactRowMapper(), userId);
@@ -96,7 +96,7 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public List<Contact> findSortedByLastName(Long userId) {
         String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
+                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
                 "ORDER BY last_name";
 
         return findMultiple(findAllQuery, new ContactRowMapper(), userId);
@@ -106,7 +106,7 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
     @Transactional
     public List<Contact> findSortedByMobilePhone(Long userId) {
         String findAllQuery = "SELECT `contact_id`, `last_name`, `first_name`, `patronymic_name`, " +
-                "`mobile_phone`, `home_phone`, `google_place_id`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
+                "`mobile_phone`, `home_phone`, `address`, `email`, `user_id` FROM `contact` WHERE user_id = ? " +
                 "ORDER BY mobile_phone";
 
         return findMultiple(findAllQuery, new ContactRowMapper(), userId);
@@ -124,7 +124,7 @@ public class ContactDaoImpl extends AbstractDao implements ContactDao {
                     .patronymicName(rs.getString("patronymic_name"))
                     .mobilePhone(rs.getString("mobile_phone"))
                     .homePhone(rs.getString("home_phone"))
-                    .googlePlaceId(rs.getString("google_place_id"))
+                    .address(rs.getString("address"))
                     .email(rs.getString("email"))
                     .userId(rs.getLong("user_id"))
                     .build();

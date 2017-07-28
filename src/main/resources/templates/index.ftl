@@ -40,12 +40,14 @@
             </div>
             <div class="list-group" id="contacts-list"></div>
         </div>
+
         <div class="col-sm-7 hidden" id="contact-data-editor">
 
             <div class="row">
                 <div class="col-sm-12" id="contact-data">
+                    <div id="new-contact-alert-place">
+                    </div>
                     <div class="form-group">
-                        <div id="new-contact-alert-place"></div>
                         <label for="contact-last-name">Last name*</label>
                         <input type="text" class="form-control" name="contact-last-name" placeholder="Last name"
                                id="contact-last-name-input">
@@ -61,7 +63,9 @@
                         <label for="contact-home-phone">Home phone</label>
                         <input type="text" class="form-control" name="contact-home-phone" placeholder="Home phone"
                                id="contact-home-phone-input">
-
+                        <label for="contact-address">Address</label>
+                        <input type="text" class="form-control" name="contact-address" placeholder="Address"
+                               id="contact-address-input">
                         <label for="contact-email">Email</label>
                         <input type="email" class="form-control" name="contact-email" placeholder="Email"
                                id="contact-email-input">

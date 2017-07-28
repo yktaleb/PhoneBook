@@ -16,7 +16,7 @@ public class Contact {
     private String patronymicName;
     private String mobilePhone;
     private String homePhone;
-    private String googlePlaceId;
+    private String address;
     private String email;
     private Long userId;
 }

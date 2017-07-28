@@ -15,7 +15,9 @@ function setupAddProductTypeButtonClickEvent() {
         $("#contact-patronymic-name-input").val("");
         $("#contact-mobile-phone-input").val("");
         $("#contact-home-phone-input").val("");
+        $("#contact-address-input").val("");
         $("#contact-email-input").val("");
+
     })
 }
 
@@ -28,7 +30,7 @@ function saveNewContact() {
     contact.patronymicName = $("#contact-patronymic-name-input").val();
     contact.mobilePhone = $("#contact-mobile-phone-input").val();
     contact.homePhone = $("#contact-home-phone-input").val();
-
+    contact.address = $("#contact-address-input").val();
     contact.email = $("#contact-email-input").val();
 
     $.ajax({
@@ -41,22 +43,28 @@ function saveNewContact() {
         contentType: 'application/json',
         data: JSON.stringify(contact),
         success: function (data) {
+            $('#new-contact-alert').remove();
             var alert;
             if (data.status == 'success') {
                 displayAllContacts();
                 $("#contact-data-editor").addClass("hidden");
+                alert = $('<div id="new-contact-alert" class="alert alert-success" role="alert">' +
+                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+                    data.message + '</div>');
             } else {
                 console.log("Error! " + JSON.stringify(data));
-                alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
+                alert = $('<div id="new-contact-alert" class="alert alert-danger" role="alert">' +
+                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
                     data.message + '</div>');
             }
-            $("#new-contact-alert-place").replaceWith(alert);
+            alert.delay(2000)
+                .fadeOut(function () {
+                    alert.remove();
+                });
+            alert.insertAfter($("#new-contact-alert-place"));
         },
         error: function (data) {
             console.error("Error" + JSON.stringify(data));
-            var alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
-                "Error</div>");
-            $("#new-contact-alert-place").replaceWith(alert);
         }
     });
 }
@@ -72,23 +80,28 @@ function deleteContact() {
             contactId: contactsCache[selected].contactId
         },
         success: function (data) {
+            $('#new-contact-alert').remove();
             var alert;
             if (data.status == 'success') {
                 displayAllContacts();
                 $("#contact-data-editor").addClass("hidden");
-
+                alert = $('<div id="new-contact-alert" class="alert alert-success" role="alert">' +
+                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+                    "Contact deleted" + '</div>');
             } else {
                 console.log("Error! " + JSON.stringify(data));
-                alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
+                alert = $('<div id="new-contact-alert" class="alert alert-danger" role="alert">' +
+                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
                     "error" + '</div>');
             }
-            $("#new-contact-alert-place").replaceWith(alert);
+            alert.delay(200)
+                .fadeOut(function () {
+                    alert.remove();
+                });
+            alert.insertAfter($("#new-contact-alert-place"));
         },
         error: function (data) {
             console.error("Error" + JSON.stringify(data));
-            var alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
-                "Error</div>");
-            $("#new-contact-alert-place").replaceWith(alert);
         }
     });
 }
@@ -101,7 +114,7 @@ function updateContact() {
     contact.patronymicName = $("#contact-patronymic-name-input").val();
     contact.mobilePhone = $("#contact-mobile-phone-input").val();
     contact.homePhone = $("#contact-home-phone-input").val();
-
+    contact.address = $("#contact-address-input").val();
     contact.email = $("#contact-email-input").val();
 
     $.ajax({
@@ -114,22 +127,28 @@ function updateContact() {
         contentType: 'application/json',
         data: JSON.stringify(contact),
         success: function (data) {
+            $('#new-contact-alert').remove();
             var alert;
             if (data.status == 'success') {
                 displayAllContacts();
                 $("#contact-data-editor").addClass("hidden");
+                alert = $('<div id="new-contact-alert" class="alert alert-success" role="alert">' +
+                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+                    data.message + '</div>');
             } else {
                 console.log("Error! " + JSON.stringify(data));
-                alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
+                alert = $('<div id="new-contact-alert" class="alert alert-danger" role="alert">' +
+                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
                     data.message + '</div>');
             }
-            $("#new-contact-alert-place").replaceWith(alert);
+            alert.delay(2000)
+                .fadeOut(function () {
+                    alert.remove();
+                });
+            alert.insertAfter($("#new-contact-alert-place"));
         },
         error: function (data) {
             console.error("Error" + JSON.stringify(data));
-            var alert = $('<div id="new-contact-alert-place" class="alert alert-danger" role="alert">' +
-                "Error</div>");
-            $("#new-contact-alert-place").replaceWith(alert);
         }
     });
 }
@@ -171,7 +190,7 @@ function addContactsToList(allContacts) {
 
 function sortContacts() {
     var id = $("#sort-type-select").val();
-
+    $("#contact-data-editor").addClass("hidden");
     if (id == 1) {
         sortByLastName();
     } else if (id == 2) {
@@ -238,6 +257,7 @@ function selectItem(index) {
     $("#contact-patronymic-name-input").val(contactsCache[index].patronymicName);
     $("#contact-mobile-phone-input").val(contactsCache[index].mobilePhone);
     $("#contact-home-phone-input").val(contactsCache[index].homePhone);
+    $("#contact-address-input").val(contactsCache[index].address);
     $("#contact-email-input").val(contactsCache[index].email);
 
 }
