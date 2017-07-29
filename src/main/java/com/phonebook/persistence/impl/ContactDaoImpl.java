@@ -3,6 +3,7 @@ package com.phonebook.persistence.impl;
 import com.phonebook.model.Contact;
 import com.phonebook.persistence.ContactDao;
 import com.phonebook.persistence.storage.database.dao.ContactDaoDatabase;
+import com.phonebook.persistence.storage.xml.dao.ContactDaoXml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -20,22 +21,24 @@ public class ContactDaoImpl implements ContactDao {
 
     @Autowired
     private ContactDaoDatabase contactDaoDatabase;
+    @Autowired
+    private ContactDaoXml contactDaoXml;
 
     @Override
-    public Contact add(Contact entity) {
+    public Contact add(Contact contact) {
         if (storageType.equals(DATABASE)) {
-            return contactDaoDatabase.add(entity);
+            return contactDaoDatabase.add(contact);
         } else {
-            return null;
+            return contactDaoXml.add(contact);
         }
     }
 
     @Override
-    public Contact find(Long id) {
+    public Contact find(Long contactId) {
         if (storageType.equals(DATABASE)) {
-            return contactDaoDatabase.find(id);
+            return contactDaoDatabase.find(contactId);
         } else {
-            return null;
+            return contactDaoXml.find(contactId);
         }
     }
 
@@ -44,16 +47,16 @@ public class ContactDaoImpl implements ContactDao {
         if (storageType.equals(DATABASE)) {
             return contactDaoDatabase.findAll();
         } else {
-            return null;
+            return contactDaoXml.findAll();
         }
     }
 
     @Override
-    public Contact update(Contact entity) {
+    public Contact update(Contact contact) {
         if (storageType.equals(DATABASE)) {
-            return contactDaoDatabase.update(entity);
+            return contactDaoDatabase.update(contact);
         } else {
-            return null;
+            return contactDaoXml.update(contact);
         }
     }
 
@@ -62,7 +65,7 @@ public class ContactDaoImpl implements ContactDao {
         if (storageType.equals(DATABASE)) {
             contactDaoDatabase.delete(id);
         } else {
-
+            contactDaoXml.delete(id);
         }
     }
 
@@ -71,7 +74,7 @@ public class ContactDaoImpl implements ContactDao {
         if (storageType.equals(DATABASE)) {
             return contactDaoDatabase.findByUserId(userId);
         } else {
-            return null;
+            return contactDaoXml.findByUserId(userId);
         }
     }
 
@@ -80,7 +83,7 @@ public class ContactDaoImpl implements ContactDao {
         if (storageType.equals(DATABASE)) {
             return contactDaoDatabase.findSortedByFirstName(userId);
         } else {
-            return null;
+            return contactDaoXml.findSortedByFirstName(userId);
         }
     }
 
@@ -89,7 +92,7 @@ public class ContactDaoImpl implements ContactDao {
         if (storageType.equals(DATABASE)) {
             return contactDaoDatabase.findSortedByLastName(userId);
         } else {
-            return null;
+            return contactDaoXml.findSortedByLastName(userId);
         }
     }
 
@@ -98,7 +101,7 @@ public class ContactDaoImpl implements ContactDao {
         if (storageType.equals(DATABASE)) {
             return contactDaoDatabase.findSortedByMobilePhone(userId);
         } else {
-            return null;
+            return contactDaoXml.findSortedByMobilePhone(userId);
         }
     }
 }

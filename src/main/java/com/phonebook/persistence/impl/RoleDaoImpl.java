@@ -3,6 +3,7 @@ package com.phonebook.persistence.impl;
 import com.phonebook.model.Role;
 import com.phonebook.persistence.RoleDao;
 import com.phonebook.persistence.storage.database.dao.RoleDaoDatabase;
+import com.phonebook.persistence.storage.xml.dao.RoleDaoXml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -20,13 +21,15 @@ public class RoleDaoImpl implements RoleDao {
 
     @Autowired
     private RoleDaoDatabase roleDaoDatabase;
+    @Autowired
+    private RoleDaoXml roleDaoXmlo;
 
     @Override
-    public Role add(Role entity) {
+    public Role add(Role role) {
         if (storageType.equals(DATABASE)) {
-            return roleDaoDatabase.add(entity);
+            return roleDaoDatabase.add(role);
         } else {
-            return null;
+            return roleDaoXmlo.add(role);
         }
     }
 
@@ -35,7 +38,7 @@ public class RoleDaoImpl implements RoleDao {
         if (storageType.equals(DATABASE)) {
             return roleDaoDatabase.find(id);
         } else {
-            return null;
+            return roleDaoXmlo.find(id);
         }
     }
 
@@ -44,16 +47,16 @@ public class RoleDaoImpl implements RoleDao {
         if (storageType.equals(DATABASE)) {
             return roleDaoDatabase.findAll();
         } else {
-            return null;
+            return roleDaoXmlo.findAll();
         }
     }
 
     @Override
-    public Role update(Role entity) {
+    public Role update(Role role) {
         if (storageType.equals(DATABASE)) {
-            return roleDaoDatabase.update(entity);
+            return roleDaoDatabase.update(role);
         } else {
-            return null;
+            return roleDaoXmlo.update(role);
         }
     }
 
@@ -62,7 +65,7 @@ public class RoleDaoImpl implements RoleDao {
         if (storageType.equals(DATABASE)) {
             roleDaoDatabase.delete(id);
         } else {
-
+            roleDaoXmlo.delete(id);
         }
     }
 
@@ -71,7 +74,7 @@ public class RoleDaoImpl implements RoleDao {
         if (storageType.equals(DATABASE)) {
             return roleDaoDatabase.findUserRolesById(userId);
         } else {
-            return null;
+            return roleDaoXmlo.findUserRolesById(userId);
         }
     }
 
@@ -80,7 +83,7 @@ public class RoleDaoImpl implements RoleDao {
         if (storageType.equals(DATABASE)) {
             return roleDaoDatabase.findByName(roleName);
         } else {
-            return null;
+            return roleDaoXmlo.findByName(roleName);
         }
     }
 }

@@ -2,7 +2,6 @@ package com.phonebook.persistence.storage.database.dao;
 
 import com.phonebook.model.Role;
 import com.phonebook.model.User;
-import com.phonebook.persistence.AbstractDao;
 import com.phonebook.persistence.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

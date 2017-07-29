@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.xml.bind.annotation.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,15 +15,31 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User implements UserDetails{
+
+    @XmlElement
     private Long userId;
+
+    @XmlElement
     private String lastName;
+
+    @XmlElement
     private String firstName;
+
+    @XmlElement
     private String patronymicName;
+
+    @XmlElement
     private String login;
+
+    @XmlElement
     private String password;
 
+    @XmlElement(name = "role")
     private List<Role> roles;
+
     private List<Contact> contacts;
 
     @Override

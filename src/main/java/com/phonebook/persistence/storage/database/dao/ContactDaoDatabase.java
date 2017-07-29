@@ -1,7 +1,6 @@
 package com.phonebook.persistence.storage.database.dao;
 
 import com.phonebook.model.Contact;
-import com.phonebook.persistence.AbstractDao;
 import com.phonebook.persistence.ContactDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

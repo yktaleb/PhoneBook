@@ -3,6 +3,7 @@ package com.phonebook.persistence.impl;
 import com.phonebook.model.User;
 import com.phonebook.persistence.UserDao;
 import com.phonebook.persistence.storage.database.dao.UserDaoDatabase;
+import com.phonebook.persistence.storage.xml.dao.UserDaoXml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -21,13 +22,15 @@ public class UserDaoImpl implements UserDao {
 
     @Autowired
     private UserDaoDatabase userDaoDatabase;
+    @Autowired
+    private UserDaoXml userDaoXml;
 
     @Override
-    public User add(User entity) {
+    public User add(User user) {
         if (storageType.equals(DATABASE)) {
-            return userDaoDatabase.add(entity);
+            return userDaoDatabase.add(user);
         } else {
-            return null;
+            return userDaoXml.add(user);
         }
     }
 
@@ -36,7 +39,7 @@ public class UserDaoImpl implements UserDao {
         if (storageType.equals(DATABASE)) {
             return userDaoDatabase.find(id);
         } else {
-            return null;
+            return userDaoXml.find(id);
         }
     }
 
@@ -45,16 +48,16 @@ public class UserDaoImpl implements UserDao {
         if (storageType.equals(DATABASE)) {
             return userDaoDatabase.findAll();
         } else {
-            return null;
+            return userDaoXml.findAll();
         }
     }
 
     @Override
-    public User update(User entity) {
+    public User update(User user) {
         if (storageType.equals(DATABASE)) {
-            return userDaoDatabase.update(entity);
+            return userDaoDatabase.update(user);
         } else {
-            return null;
+            return userDaoXml.update(user);
         }
     }
 
@@ -63,7 +66,7 @@ public class UserDaoImpl implements UserDao {
         if (storageType.equals(DATABASE)) {
             userDaoDatabase.delete(id);
         } else {
-
+            userDaoXml.delete(id);
         }
     }
 
@@ -72,7 +75,7 @@ public class UserDaoImpl implements UserDao {
         if (storageType.equals(DATABASE)) {
             return userDaoDatabase.findByLogin(login);
         } else {
-            return null;
+            return userDaoXml.findByLogin(login);
         }
     }
 
@@ -90,7 +93,7 @@ public class UserDaoImpl implements UserDao {
         if (storageType.equals(DATABASE)) {
             userDaoDatabase.persistUserRoles(user);
         } else {
-
+            userDaoXml.persistUserRoles(user);
         }
     }
 
@@ -99,7 +102,7 @@ public class UserDaoImpl implements UserDao {
         if (storageType.equals(DATABASE)) {
             return userDaoDatabase.updateGeneralInformation(user);
         } else {
-            return null;
+            return userDaoXml.updateGeneralInformation(user);
         }
     }
 
@@ -108,7 +111,7 @@ public class UserDaoImpl implements UserDao {
         if (storageType.equals(DATABASE)) {
             return userDaoDatabase.updatePassword(user);
         } else {
-            return null;
+            return userDaoXml.updatePassword(user);
         }
     }
 }

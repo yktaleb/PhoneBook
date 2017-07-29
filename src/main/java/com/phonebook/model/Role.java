@@ -6,13 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.xml.bind.annotation.*;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Role implements GrantedAuthority{
-    Long roleId;
-    String roleName;
+
+    @XmlElement
+    private Long roleId;
+
+    @XmlElement
+    private String roleName;
 
     @Override
     public String getAuthority() {

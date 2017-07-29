@@ -4,6 +4,7 @@ import com.phonebook.model.Role;
 import com.phonebook.model.User;
 import com.phonebook.persistence.RoleDao;
 import com.phonebook.persistence.UserDao;
+import com.phonebook.persistence.impl.RoleDaoImpl;
 import com.phonebook.persistence.impl.UserDaoImpl;
 import com.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDaoImpl userDao;
     @Autowired
-    private RoleDao roleDao;
+    private RoleDaoImpl roleDao;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 

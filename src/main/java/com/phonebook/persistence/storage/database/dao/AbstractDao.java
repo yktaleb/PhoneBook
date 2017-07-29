@@ -1,4 +1,4 @@
-package com.phonebook.persistence;
+package com.phonebook.persistence.storage.database.dao;
 
 import com.phonebook.persistence.exceptions.NonUniqueResultException;
 import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;

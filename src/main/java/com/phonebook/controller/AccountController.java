@@ -17,14 +17,8 @@ import java.util.*;
 @RestController
 public class AccountController {
 
-    private UserService userService;
-    private RoleDao roleDao;
-
     @Autowired
-    public AccountController(UserService userService, RoleDao roleDao) {
-        this.userService = userService;
-        this.roleDao = roleDao;
-    }
+    private UserService userService;
 
     @RequestMapping(value = "/api/user/account", method = RequestMethod.GET)
     public Map<String, Object> getName() {

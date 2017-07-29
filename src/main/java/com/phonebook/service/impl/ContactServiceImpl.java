@@ -2,6 +2,7 @@ package com.phonebook.service.impl;
 
 import com.phonebook.model.Contact;
 import com.phonebook.persistence.ContactDao;
+import com.phonebook.persistence.impl.ContactDaoImpl;
 import com.phonebook.service.ContactService;
 import com.phonebook.service.UserService;
 import com.phonebook.service.exceptions.IncorrectContactDataException;
@@ -23,7 +24,7 @@ public class ContactServiceImpl implements ContactService {
     private final String FIRST_NAME = "first_name";
 
     @Autowired
-    private ContactDao contactDao;
+    private ContactDaoImpl contactDao;
     @Autowired
     private UserService userService;
 
